@@ -1,46 +1,25 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Категории — Магазин птиц</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <header>
-        <h1>Магазин птиц «Перышко»</h1>
-    </header>
+{% extends "base.html" %}
+{%load static%}
+{%block title_name%}
+Категории товаров
+{%endblock%}
 
-<nav>
-    <a href="{% url 'home' %}">Главная</a>
-    <a href="{% url 'about' %}">О компании</a>
+{%block subnav%}
+<nav class="subnav">
     <a href="{% url 'products' %}">Товары</a>
-    <a href="{% url 'cart' %}">Корзина</a>
-    |
-    <a href="{% url 'category_list' %}">Категории (админ)</a>
-    <a href="{% url 'collection_list' %}">Коллекции (админ)</a>
-    <a href="{% url 'accessory_list' %}">Аксессуары (админ)</a>
-    <a href="{% url 'bird_list' %}">Птицы (админ)</a>
-    <a href="{% url 'cage_list' %}">Клетки (админ)</a>
-    <a href="/admin/">Django Admin</a>
+    <a href="{% url 'all_products' %}">Все товары</a>
 </nav>
+{%endblock%}
 
-    <nav class="subnav">
-        <a href="{% url 'products' %}">Товары</a>
-        <a href="{% url 'all_products' %}">Все товары</a>
-    </nav>
+{%block content%}
 
-    <main>
-        {% for item in category_list %}
-        <div class="card">
-            <h3>{{ item.name }}</h3>
-            <p>{{ item.description }}</p>
-        </div>
-        {% endfor %}
-    </main>
-    <footer>
-        <p>© Все права защищены.</p>
-    </footer>
-</body>
-</html>
+<h2>Категории</h2>
+
+{% for item in category_list %}
+<div class="card">
+    <h3>{{ item.name }}</h3>
+    <p>{{ item.description }}</p>
+</div>
+{% endfor %}
+
+{%endblock%}
