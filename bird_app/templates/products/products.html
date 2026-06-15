@@ -33,7 +33,7 @@
     {% endif %}
 </div>
 {% empty %}
-<p>Товаров пока нет. Добавьте через <a href="{% url 'accessory_create' %}">форму</a> или админку.</p>
+<p>Товаров пока нет.{% if perms.bird_app.add_accessory %} Добавьте через <a href="{% url 'accessory_create' %}">форму</a> или админку.{% endif %}</p>
 {% endfor %}
 
 {%endblock%}

@@ -39,4 +39,11 @@ urlpatterns = [
     path('cage/create/', CageCreateView.as_view(), name='cage_create'),
     path('cage/<int:pk>/update/', CageUpdateView.as_view(), name='cage_update'),
     path('cage/<int:pk>/delete/', CageDeleteView.as_view(), name='cage_delete'),
+
+
+    path('login/', login_user, name='login_page'),
+    path('registration/', registration_user, name='registration_page'),
+    path('logout/', logout_user, name='logout_page')
+
+
 ]

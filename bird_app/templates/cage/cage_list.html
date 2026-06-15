@@ -7,7 +7,9 @@
 {%block content%}
 
 <h1>Клетки</h1>
+{% if perms.bird_app.add_cage %}
 <a href="{% url 'cage_create' %}" class="add-link">Добавить клетку</a>
+{% endif %}
 <ul class="item-list">
     {% for item in cage_list %}
     <li class="item-card">
@@ -16,8 +18,12 @@
         {% endif %}
         <a href="{% url 'cage_detail' item.pk %}" class="item-name">{{ item.name }}</a>
         <span class="item-price">— {{ item.price }} руб.</span>
+        {% if perms.bird_app.change_cage %}
         <a href="{% url 'cage_update' item.pk %}" class="action-edit">Редактировать</a>
+        {% endif %}
+        {% if perms.bird_app.delete_cage %}
         <a href="{% url 'cage_delete' item.pk %}" class="action-delete">Удалить</a>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>

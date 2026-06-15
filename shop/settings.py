@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "bird_app",
+    "api",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -126,3 +128,9 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT':'%Y-%m-%d %H:%M:%S.%f%z'
+    }
+
+LOGIN_URL = '/login/'

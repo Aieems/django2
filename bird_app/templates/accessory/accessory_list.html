@@ -7,7 +7,9 @@
 {%block content%}
 
 <h1>Аксессуары</h1>
+{% if perms.bird_app.add_accessory %}
 <a href="{% url 'accessory_create' %}" class="add-link">Добавить аксессуар</a>
+{% endif %}
 <ul class="item-list">
     {% for item in accessory_list %}
     <li class="item-card">
@@ -16,8 +18,12 @@
         {% endif %}
         <a href="{% url 'accessory_detail' item.pk %}" class="item-name">{{ item.name }}</a>
         <span class="item-price">— {{ item.price }} руб.</span>
+        {% if perms.bird_app.change_accessory %}
         <a href="{% url 'accessory_update' item.pk %}" class="action-edit">Редактировать</a>
+        {% endif %}
+        {% if perms.bird_app.delete_accessory %}
         <a href="{% url 'accessory_delete' item.pk %}" class="action-delete">Удалить</a>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>

@@ -7,13 +7,19 @@
 {%block content%}
 
 <h1>Коллекции</h1>
+{% if perms.bird_app.add_collection %}
 <a href="{% url 'collection_create' %}" class="add-link">Добавить коллекцию</a>
+{% endif %}
 <ul class="item-list">
     {% for item in collection_list %}
     <li class="item-card">
         <a href="{% url 'collection_detail' item.pk %}" class="item-name">{{ item.name }}</a>
+        {% if perms.bird_app.change_collection %}
         <a href="{% url 'collection_update' item.pk %}" class="action-edit">Редактировать</a>
+        {% endif %}
+        {% if perms.bird_app.delete_collection %}
         <a href="{% url 'collection_delete' item.pk %}" class="action-delete">Удалить</a>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>

@@ -7,13 +7,19 @@
 {%block content%}
 
 <h1>Категории</h1>
+{% if perms.bird_app.add_category %}
 <a href="{% url 'category_create' %}" class="add-link">Добавить категорию</a>
+{% endif %}
 <ul class="item-list">
     {% for item in category_list %}
     <li class="item-card">
         <a href="{% url 'category_detail' item.pk %}" class="item-name">{{ item.name }}</a>
+        {% if perms.bird_app.change_category %}
         <a href="{% url 'category_update' item.pk %}" class="action-edit">Редактировать</a>
+        {% endif %}
+        {% if perms.bird_app.delete_category %}
         <a href="{% url 'category_delete' item.pk %}" class="action-delete">Удалить</a>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>
