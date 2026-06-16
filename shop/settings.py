@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "bird_app",
     "api",
     "rest_framework",
+    "basket",
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,7 @@ REST_FRAMEWORK = {
     }
 
 LOGIN_URL = '/login/'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
+BASKET_SESSION_ID = 'basket'

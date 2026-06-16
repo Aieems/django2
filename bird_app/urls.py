@@ -6,7 +6,8 @@ urlpatterns = [
     path('about/', about_views, name='about'),
     path('about/contacts/', contacts_views, name='contacts'),
     path('about/location/', location_views, name='location'),
-    path('products/', AccessoryListView.as_view(template_name='products/products.html'), name='products'),
+    path('products/', ProductsView.as_view(), name='products'),
+    path('orders/', OrdersView.as_view(), name='orders'),
     path('products/categories/', CategoryListView.as_view(template_name='products/categories.html'), name='categories'),    path('products/all/', AccessoryListView.as_view(template_name='products/all_products.html'), name='all_products'),
     path('cart/', cart_views, name='cart'),
 
@@ -43,7 +44,7 @@ urlpatterns = [
 
     path('login/', login_user, name='login_page'),
     path('registration/', registration_user, name='registration_page'),
-    path('logout/', logout_user, name='logout_page')
+    path('logout/', logout_user, name='logout_page'),
 
 
 ]

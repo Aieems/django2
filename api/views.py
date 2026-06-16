@@ -45,3 +45,29 @@ class CageViewSet(viewsets.ModelViewSet):
     pagination_class = PaginationPage
     filter_backends = [CustomSearchFilter]
     search_fields = ['name', 'description', 'size', 'material']
+
+class SupplierViewSet(viewsets.ModelViewSet):
+    queryset = Supplier.objects.all()
+    serializer_class = SupplierSerializer
+    permission_classes = [CustomPermissions]
+    pagination_class = PaginationPage
+    filter_backends = [CustomSearchFilter]
+    search_fields = ['name', 'description', 'phone']
+
+
+class ManufacturerViewSet(viewsets.ModelViewSet):
+    queryset = Manufacturer.objects.all()
+    serializer_class = ManufacturerSerializer
+    permission_classes = [CustomPermissions]
+    pagination_class = PaginationPage
+    filter_backends = [CustomSearchFilter]
+    search_fields = ['name', 'description']
+
+
+class FeedViewSet(viewsets.ModelViewSet):
+    queryset = Feed.objects.all()
+    serializer_class = FeedSerializer
+    permission_classes = [CustomPermissions]
+    pagination_class = PaginationPage
+    filter_backends = [CustomSearchFilter]
+    search_fields = ['name', 'description']

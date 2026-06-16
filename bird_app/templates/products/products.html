@@ -1,39 +1,77 @@
 {% extends "base.html" %}
-{%load static%}
-{%block title_name%}
+{% load static %}
+{% block title_name %}
 Товары
-{%endblock%}
+{% endblock %}
 
-{%block subnav%}
-<nav class="subnav">
-    <a href="{% url 'categories' %}">Категории</a>
-    <a href="{% url 'all_products' %}">Все товары</a>
-</nav>
-{%endblock%}
-
-{%block content%}
+{% block content %}
 
 <h2>Товары</h2>
 
-<div class="card">
-    <h3><a href="{% url 'categories' %}">Категории</a></h3>
-    <p>Птицы, клетки, корм, аксессуары</p>
-</div>
-<div class="card">
-    <h3><a href="{% url 'all_products' %}">Все товары</a></h3>
-    <p>Полный каталог магазина</p>
-</div>
+<ul class="item-list">
 
-{% for item in accessory_list %}
-<div class="card">
-    <h3><a href="{% url 'accessory_detail' item.pk %}">{{ item.name }}</a></h3>
-    <p>Цена: {{ item.price }} ₽</p>
-    {% if item.photo %}
-        <img src="{{ item.photo.url }}" alt="{{ item.name }}" width="150">
-    {% endif %}
-</div>
-{% empty %}
-<p>Товаров пока нет.{% if perms.bird_app.add_accessory %} Добавьте через <a href="{% url 'accessory_create' %}">форму</a> или админку.{% endif %}</p>
-{% endfor %}
+    {% for item in accessory_list %}
+    <li class="item-card">
+        {% if item.photo %}
+            <img src="{{ item.photo.url }}" alt="{{ item.name }}" width="80">
+        {% endif %}
+        <span class="item-name">Аксессуар: {{ item.name }}</span>
+        <span class="item-price">— {{ item.price }} руб.</span>
 
-{%endblock%}
+        <form method="post" action="{% url 'basket_add' 'accessory' item.pk %}" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="count" value="1">
+            <input type="hidden" name="reload" value="0">
+            <button type="submit" class="btn btn-success">Добавить в корзину</button>
+        </form>
+    </li>
+    {% endfor %}
+
+    {% for item in bird_list %}
+    <li class="item-card">
+        {% if item.photo %}
+            <img src="{{ item.photo.url }}" alt="{{ item.name }}" width="80">
+        {% endif %}
+        <span class="item-name">Птица: {{ item.name }}</span>
+        <span class="item-price">— {{ item.price }} руб.</span>
+
+        <form method="post" action="{% url 'basket_add' 'bird' item.pk %}" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="count" value="1">
+            <input type="hidden" name="reload" value="0">
+            <button type="submit" class="btn btn-success">Добавить в корзину</button>
+        </form>
+    </li>
+    {% endfor %}
+
+    {% for item in cage_list %}
+    <li class="item-card">
+        {% if item.photo %}
+            <img src="{{ item.photo.url }}" alt="{{ item.name }}" width="80">
+        {% endif %}
+        <span class="item-name">Клетка: {{ item.name }}</span>
+        <span class="item-price">— {{ item.price }} руб.</span>
+
+        <form method="post" action="{% url 'basket_add' 'cage' item.pk %}" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="count" value="1">
+            <input type="hidden" name="reload" value="0">
+            <button type="submit" class="btn btn-success">Добавить в корзину</button>
+        </form>
+    </li>
+    {% endfor %}
+
+    {% for item in feed_list %}
+    <li class="item-card">
+        <span class="item-name">Корм: {{ item.name }}</span>
+        <span class="item-price">— {{ item.price }} руб.</span>
+    </li>
+    {% endfor %}
+
+</ul>
+
+{% if not accessory_list and not bird_list and not cage_list and not feed_list %}
+<p>Товаров пока нет.</p>
+{% endif %}
+
+{% endblock %}

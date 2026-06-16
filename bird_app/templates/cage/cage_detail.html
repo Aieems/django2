@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{%load static%}
-{%block title_name%}
+{% load static %}
+{% block title_name %}
 {{ cage.name }}
-{%endblock%}
+{% endblock %}
 
-{%block content%}
+{% block content %}
 
 <h1>{{ cage.name }}</h1>
 <div class="detail-info">
@@ -20,10 +20,24 @@
         {% endfor %}
     </p>
 </div>
+
+{% if request.user.is_authenticated and form_basket %}
+<form method="post" action="{% url 'basket_add' 'cage' cage.pk %}" class="my-3">
+    {% csrf_token %}
+    <div class="mb-2" style="max-width: 200px;">
+        <label class="form-label">Количество</label>
+        {{ form_basket.count }}
+    </div>
+    {{ form_basket.reload }}
+    <button type="submit" class="btn btn-success">Добавить в корзину</button>
+</form>
+{% endif %}
+
 {% if cage.photo %}
     <img src="{{ cage.photo.url }}" alt="{{ cage.name }}" class="detail-photo">
 {% endif %}
+
 <br>
 <a href="{% url 'cage_list' %}" class="back-link">Вернуться к списку клеток</a>
 
-{%endblock%}
+{% endblock %}

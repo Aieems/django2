@@ -60,3 +60,39 @@ class CageSerializer(serializers.ModelSerializer):
             'category',
             'collection',
         ]
+
+class SupplierSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Supplier
+        fields = [
+            'name',
+            'description',
+            'phone',
+        ]
+
+
+class ManufacturerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Manufacturer
+        fields = [
+            'name',
+            'description',
+        ]
+
+
+class FeedSerializer(serializers.ModelSerializer):
+    price = serializers.DecimalField(label='Цена', max_digits=10, decimal_places=2)
+    weight = serializers.DecimalField(label='Вес (кг)', max_digits=10, decimal_places=2)
+
+    class Meta:
+        model = Feed
+        fields = [
+            'name',
+            'description',
+            'price',
+            'weight',
+            'is_exists',
+            'category',
+            'manufacturer',
+            'supplier',
+        ]

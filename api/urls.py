@@ -11,4 +11,7 @@ router.register('collection', CollectionViewSet, basename='collection')
 router.register('accessory', AccessoryViewSet, basename='accessory')
 router.register('bird', BirdViewSet, basename='bird')
 router.register('cage', CageViewSet, basename='cage')
+router.register('supplier', SupplierViewSet, basename='supplier')
+router.register('manufacturer', ManufacturerViewSet, basename='manufacturer')
+router.register('feed', FeedViewSet, basename='feed')
 urlpatterns += router.urls

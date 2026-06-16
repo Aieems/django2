@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 MAX_LENGTH = 255
@@ -135,3 +136,77 @@ class Feed(models.Model):
     class Meta:
         verbose_name = 'Корм'
         verbose_name_plural = 'Корма'
+
+
+class Order(models.Model):
+    SHOP = "SH"
+    COURIER = "CR"
+    PICKUPPOINT = "PP"
+    TYPE_DELIVERY = [
+        (SHOP, 'Вывоз из магазина'),
+        (COURIER, 'Курьер'),
+        (PICKUPPOINT, 'Пункт выдачи заказов'),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        verbose_name='Пользователь',
+        related_name='orders',
+    )
+    buyer_firstname = models.CharField(max_length=MAX_LENGTH, verbose_name='Фамилия покупателя')
+    buyer_name = models.CharField(max_length=MAX_LENGTH, verbose_name='Имя покупателя')
+    buyer_surname = models.CharField(max_length=MAX_LENGTH, blank=True, null=True, verbose_name='Отчество покупателя')
+    comment = models.CharField(max_length=MAX_LENGTH, blank=True, null=True, verbose_name='Комментарий к заказу')
+    delivery_address = models.CharField(max_length=MAX_LENGTH, verbose_name='Адрес доставки')
+    delivery_type = models.CharField(max_length=2, choices=TYPE_DELIVERY, default=SHOP, verbose_name='Способ доставки')
+    price = models.FloatField(default=0, verbose_name='Сумма заказа')
+    date_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания заказа')
+    date_finish = models.DateTimeField(null=True, blank=True, verbose_name='Дата завершения заказа')
+    accessory = models.ManyToManyField('Accessory', through='Pos_order', verbose_name='Товар', blank=True)
+
+    def __str__(self):
+        return f'#{self.pk} - {self.buyer_firstname} {self.buyer_name} ({self.date_create})'
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+
+class Pos_order(models.Model):
+    accessory = models.ForeignKey(
+        Accessory,
+        on_delete=models.PROTECT,
+        verbose_name='Аксессуар',
+        null=True,
+        blank=True
+    )
+    bird = models.ForeignKey(
+        Bird,
+        on_delete=models.PROTECT,
+        verbose_name='Птица',
+        null=True,
+        blank=True
+    )
+    cage = models.ForeignKey(
+        Cage,
+        on_delete=models.PROTECT,
+        verbose_name='Клетка',
+        null=True,
+        blank=True
+    )
+    order = models.ForeignKey(Order, on_delete=models.PROTECT, verbose_name='Заказ')
+    count = models.PositiveIntegerField(default=1, verbose_name='Количество продукта')
+    discount = models.PositiveIntegerField(default=0, verbose_name='Скидка на позицию')
+
+    def get_product(self):
+        return self.accessory or self.bird or self.cage
+
+    def __str__(self):
+        product = self.get_product()
+        product_name = product.name if product else 'Без товара'
+        return f'{self.order.pk} {product_name} ({self.order.buyer_firstname} {self.order.buyer_name})'
+
+    class Meta:
+        verbose_name = 'Позиция заказа'
+        verbose_name_plural = 'Позиции заказов'
